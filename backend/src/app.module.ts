@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Test } from './test.entity';
+import { TodoModule } from './todo/todo.module';
 
 
 @Module({
@@ -18,6 +19,7 @@ import { Test } from './test.entity';
       synchronize: true,
       logging: true, // ← 追加でクエリ出力も確認できる
     }),
+    TodoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
