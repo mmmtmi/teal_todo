@@ -34,13 +34,13 @@ export default {
             text: '',
             done: false,
         }
-    }catch(error){
+      }catch(error){
         console.error('追加に失敗:', error);
         alert('追加に失敗しました');
       }
     },
     async cleanTodo(){
-      const compleatedTodos = this.todos.filter((todo) => todo.done);
+      const compleatedTodos = this.todos.filter((todo) => todo.isCompleted);
       for(const todo of compleatedTodos) {
         try{
           await this.$axios.delete(`http://localhost:3000/todos/${todo.id}`);
@@ -49,9 +49,19 @@ export default {
           alert('削除に失敗しました');
         }
       }
-      this.todos = this.todos.filter((todo) => !todo.done);
+      this.todos = this.todos.filter((todo) => !todo.isCompleted);
       
       
+    },
+    async updateTodo(todo){
+      try{
+        await this.$axios.patch(`http://localhost:3000/todos/${todo.id}`,{
+          isCompleted: todo.isCompleted,
+        });
+      }catch(error){
+        console.error('更新に失敗:', error);
+        alert('更新に失敗しました');
+      }
     },
     
   },
@@ -68,8 +78,8 @@ export default {
     </p>
   <ul v-else> 
     <li v-for="(todo, index) in todos" :key="index">
-      <input type="checkbox" v-model="todo.done">
-      <span :class="{'todo-done': todo.done}">{{ todo.text }}</span>
+      <input type="checkbox" v-model="todo.isCompleted" @change="updateTodo(todo)">
+      <span :class="{'todo-done': todo.isCompleted}">{{ todo.text }}</span>
     </li>
   </ul>
 </template>
