@@ -1,5 +1,11 @@
 <script>
+import TodoAdd from './components/TodoAdd.vue';
+import TodoList from './components/TodoList.vue';
 export default {
+  components: {
+    TodoAdd,
+    TodoList,
+  },
   data() {
     return {
         todos: [
@@ -7,10 +13,7 @@ export default {
           // { text: '牛乳を買う', done: false },
           // { text: '家賃を払う', done: false },
         ],
-        newTodo: { 
-          text: '',
-          done: false,
-        },
+        newTodoText: '',
     }
   },
   mounted(){
@@ -26,9 +29,12 @@ export default {
       }
     },
     async addTodo(){
-      if(!this.newTodo.text)return alert('ToDoを入力してください')
+      if(!this.newTodoText)return alert('ToDoを入力してください')
       try{
-        const response  = await this.$axios.post('http://localhost:3000/todos', this.newTodo);
+        const response  = await this.$axios.post('http://localhost:3000/todos',  {
+          text: this.newTodoText,
+          isCompleted: false,
+        });
         this.todos.push(response.data);
         this.newTodo = {
             text: '',
@@ -38,6 +44,7 @@ export default {
         console.error('追加に失敗:', error);
         alert('追加に失敗しました');
       }
+      this.newTodoText = '';
     },
     async cleanTodo(){
       const compleatedTodos = this.todos.filter((todo) => todo.isCompleted);
@@ -62,26 +69,25 @@ export default {
         console.error('更新に失敗:', error);
         alert('更新に失敗しました');
       }
-    },
-    
+    },    
   },
 }
 </script>
 
 <template>
   <h1>My ToDo App</h1>
+  <TodoAdd
+    :text="newTodoText"
+    @update:text="newTodoText = $event"
+    @add-todo="addTodo"
+    @clean-todo="cleanTodo"
+  />
 
-  <input type="text" v-model="newTodo.text"/><button @click="addTodo">追加</button>
-  <button @click="cleanTodo">完了済みを削除する</button>
-  <p v-if="todos.length === 0">
-    ToDoがありません
-    </p>
-  <ul v-else> 
-    <li v-for="(todo, index) in todos" :key="index">
-      <input type="checkbox" v-model="todo.isCompleted" @change="updateTodo(todo)">
-      <span :class="{'todo-done': todo.isCompleted}">{{ todo.text }}</span>
-    </li>
-  </ul>
+  <TodoList
+    :todos="todos"
+    @update-todo="updateTodo"
+  />
+
 </template>
 
 <style>
