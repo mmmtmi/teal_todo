@@ -6,6 +6,7 @@ import { Test } from './test.entity';  // Test エンティティをインポー
 import { TodoModule } from './todo/todo.module';
 import { Todo2Module } from './todo2/todo2.module';
 import { Todo2 } from './todo2/entities/todo2.entity';
+import { Todo } from './todo/entities/todo.entity';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { Todo2 } from './todo2/entities/todo2.entity';
       username: 'root',
       password: 'banana',
       database: 'teal_todo',
-      entities: [Test, Todo2], // 'Test' と 'Todo2' を指定
+      entities: [Test, Todo2,Todo], // 'Test' と 'Todo2' を指定
       synchronize: true,
       logging: true,
     }),

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { Todo2Service } from './todo2.service';
 import { CreateTodo2Dto } from './dto/create-todo2.dto';
 import { UpdateTodo2Dto } from './dto/update-todo2.dto';
@@ -32,4 +32,8 @@ export class Todo2Controller {
   remove(@Param('id') id: string) {
     return this.todo2Service.remove(+id);
   }
+  @Put(':id')
+  updateTodo(@Param('id') id: string, @Body() updateTodo2Dto: UpdateTodo2Dto) {
+    return this.todo2Service.update(+id, updateTodo2Dto);
+  } 
 }
