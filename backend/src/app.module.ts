@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Test } from './test.entity';
+import { Test } from './test.entity';  // Test エンティティをインポート
 import { TodoModule } from './todo/todo.module';
-
+import { Todo2Module } from './todo2/todo2.module';
+import { Todo2 } from './todo2/entities/todo2.entity';
 
 @Module({
   imports: [
@@ -15,14 +16,14 @@ import { TodoModule } from './todo/todo.module';
       username: 'root',
       password: 'banana',
       database: 'teal_todo',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'], // ← ここ
+      entities: [Test, Todo2], // 'Test' と 'Todo2' を指定
       synchronize: true,
-      logging: true, // ← 追加でクエリ出力も確認できる
+      logging: true,
     }),
     TodoModule,
+    Todo2Module,
   ],
   controllers: [AppController],
   providers: [AppService],
-
 })
 export class AppModule {}
