@@ -7,13 +7,23 @@ import { Todo2 } from './entities/todo2.entity';
 
 @Injectable()
 export class Todo2Service {
+  findAndCount(options: { skip: number; take: number; }) {
+    return this.todoRepository.findAndCount({
+      skip: options.skip,
+      take: options.take,
+      order: {id: 'ASC'},
+    });
+  }
   constructor(
     @InjectRepository(Todo2)
     private todoRepository: Repository<Todo2>,
   ) {}
 
-  findAll(): Promise<Todo2[]> {
-    return this.todoRepository.find();
+  async findAll(skip: number, take: number): Promise<Todo2[]> {
+    return this.todoRepository.find({
+      skip,
+      take,
+    });
   }
 
   async create(createTodoDto: CreateTodo2Dto): Promise<Todo2> {
@@ -50,5 +60,6 @@ export class Todo2Service {
       throw new NotFoundException(`TODO with id ${id} not found`);
     }
   }
+    
 }
 

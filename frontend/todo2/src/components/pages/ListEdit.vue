@@ -29,24 +29,58 @@ async function updateTodo() {
   alert('更新しました！')
   router.push('/') // 一覧に戻るなど
 }
+
+
 </script>
 
 <template>
   <div>
+    <div>
     <h2>ToDo編集</h2>
-    <label>ToDo:</label>
-    <input v-model="todo" />
-
+    </div>
+    <div><label>ToDo:</label></div>
+    <div>
+    <textarea v-model="todo" id="todoCss" ></textarea>
+   </div>
+    
     <label>メモ:</label>
-    <input v-model="memo" />
+<div> 
+  <textarea id="textarea" v-model="memo" ></textarea>
 
-    <label>状態:</label>
+</div>
+    
+    <dev><label>状態:</label></dev>
+    <div>
     <select v-model="status">
       <option>未着手</option>
       <option>進行中</option>
       <option>完了</option>
     </select>
+    </div>
+    <div>
+    
+    </div>
 
     <button @click="updateTodo">保存</button>
   </div>
 </template>
+
+<style scoped>
+
+#todoCss {
+  resize: none;
+  line-height: 1.8;
+  height: 50px;
+  width: 50%;
+  padding: 2px;
+} 
+
+#textarea {
+  resize: none;
+  line-height: 1.8;
+  height: 200px;
+  width: 50%;
+  padding: 2px;
+} 
+
+</style>

@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
 import { Todo2Service } from './todo2.service';
 import { CreateTodo2Dto } from './dto/create-todo2.dto';
 import { UpdateTodo2Dto } from './dto/update-todo2.dto';
+
 
 @Controller('todo2')
 export class Todo2Controller {
@@ -14,10 +15,14 @@ export class Todo2Controller {
   }
 
   @Get()
-  findAll() {
-    return this.todo2Service.findAll();
-  }
-
+    async findAll(@Query('page') page: number, @Query('limit') limit: number ) {
+      const [result, total] = await this.todo2Service.findAndCount({
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+    return {todos : result, total};
+    }
+  
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.todo2Service.findOne(+id);
