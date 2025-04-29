@@ -15,13 +15,9 @@ export class Todo2Controller {
   }
 
   @Get()
-    async findAll(@Query('page') page: number, @Query('limit') limit: number ) {
-      const [result, total] = await this.todo2Service.findAndCount({
-        skip: (page - 1) * limit,
-        take: limit,
-      });
-    return {todos : result, total};
-    }
+  async findAll(){
+    return this.todo2Service.findAll();
+  }
   
   @Get(':id')
   findOne(@Param('id') id: string) {

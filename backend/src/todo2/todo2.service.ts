@@ -19,11 +19,8 @@ export class Todo2Service {
     private todoRepository: Repository<Todo2>,
   ) {}
 
-  async findAll(skip: number, take: number): Promise<Todo2[]> {
-    return this.todoRepository.find({
-      skip,
-      take,
-    });
+  async findAll(): Promise<Todo2[]> {
+    return this.todoRepository.find()
   }
 
   async create(createTodoDto: CreateTodo2Dto): Promise<Todo2> {
