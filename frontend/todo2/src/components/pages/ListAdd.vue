@@ -40,7 +40,7 @@ document.querySelectorAll('.FlexTextarea').forEach(flexTextarea)
 
 <template>
     <div>
-    <h2>ToDo編集</h2>
+    <h2 class="display-6">ToDo編集</h2>
     </div>
     <div><label>ToDo:</label></div>
     <div>
@@ -64,7 +64,7 @@ document.querySelectorAll('.FlexTextarea').forEach(flexTextarea)
     </select>
     </div>
     <div>
-    <button @click="addTodo">保存</button>
+    <button class="btn btn-primary" @click="addTodo">保存</button>
     </div>
 </template>
 

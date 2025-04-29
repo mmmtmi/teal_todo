@@ -118,11 +118,11 @@ function goToAdd() {
   </div>
 
   <div>
-    <button @click="goToAdd">追加</button>
+    <button class="btn btn-primary" @click="goToAdd">追加</button>
 
     <p v-if="todos.length === 0">ToDoがありません</p>
 
-    <table v-else>
+    <table v-else >
       <tbody>
         <tr>
           <th>ToDo</th>
@@ -137,8 +137,8 @@ function goToAdd() {
           <td>{{ todo.status }}</td>
           <td>{{ formatDate(todo.addDate) }}</td>
           <td>{{ formatDate(todo.changeDate) }}</td>
-          <td><button @click="goToEdit(todo)">編集</button></td>
-          <td><button @click="deleteTodo(todo.id)">削除</button></td>
+          <td><button class="btn btn-primary" @click="goToEdit(todo)">編集</button></td>
+          <td><button class="btn btn-primary" @click="deleteTodo(todo.id)">削除</button></td>
         </tr>
       </tbody>
     </table>

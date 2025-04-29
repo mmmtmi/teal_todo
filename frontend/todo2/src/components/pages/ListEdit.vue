@@ -36,7 +36,7 @@ async function updateTodo() {
 <template>
   <div>
     <div>
-    <h2>ToDo編集</h2>
+      <h2 class="display-6">ToDo編集</h2>
     </div>
     <div><label>ToDo:</label></div>
     <div>
@@ -61,7 +61,7 @@ async function updateTodo() {
     
     </div>
 
-    <button @click="updateTodo">保存</button>
+    <button class="btn btn-primary" @click="updateTodo">保存</button>
   </div>
 </template>
 
