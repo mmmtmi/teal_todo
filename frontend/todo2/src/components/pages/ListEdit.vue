@@ -11,8 +11,10 @@ const memo = ref('')
 const status = ref('未着手') // 初期状態
 const id = route.params.id
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 onMounted(async () => {
-  const response = await axios.get(`http://localhost:3000/todo2/${id}`)
+  const response = await axios.get(`${apiUrl}/todo2/${id}`)
   const data = response.data
   todo.value = data.todo
   memo.value = data.memo
@@ -20,7 +22,7 @@ onMounted(async () => {
 })
 
 async function updateTodo() {
-  await axios.put(`http://localhost:3000/todo2/${id}`, {
+  await axios.put(`${apiUrl}/todo2/${id}`, {
     todo: todo.value,
     memo: memo.value,
     status: status.value,
@@ -34,6 +36,7 @@ async function updateTodo() {
 </script>
 
 <template>
+  
   <div>
     <div>
       <h2 class="display-6">ToDo編集</h2>

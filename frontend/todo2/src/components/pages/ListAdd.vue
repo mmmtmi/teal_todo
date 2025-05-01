@@ -9,6 +9,8 @@ const todo = ref('');
 const memo = ref('');
 const status = ref('未着手');
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 async function addTodo() {
   if (!todo.value) return alert('ToDoを入力してください');
   const payload = {
@@ -19,7 +21,7 @@ async function addTodo() {
     changeDate: new Date().toISOString(),
   };
   try {
-    const response = await axios.post('http://localhost:3000/todo2', payload);
+    const response = await axios.post(`${apiUrl}/todo2`, payload);
     router.push('/'); // 一覧に戻るなど
   } catch (error) {
     console.error('追加に失敗:', error);

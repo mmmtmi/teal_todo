@@ -15,6 +15,8 @@ const todoPage = ref(1);
 const allTodos = ref([]); // すべてのToDoを格納する配列
 const itemsPerPage = ref(10); // 1ページあたりのアイテム数
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 onMounted(() => {
   fetchTodos();
 });
@@ -28,7 +30,8 @@ const selectedStatus = ref('all'); // 'all', '未着手', '進行中', '完了'
 
 async function fetchTodos() {
   try {
-    const response = await axios.get('http://localhost:3000/todo2');
+    const response = await axios.get(`${apiUrl}/todo2`);
+    console.log('todo2 response:', response.data);
     todos.value = response.data;
   } catch (error) {
     console.error('データの取得に失敗:', error);
@@ -71,7 +74,7 @@ async function addTodo() {
     changeDate: new Date().toISOString(),
   };
   try {
-    const response = await axios.post('http://localhost:3000/todo2', payload);
+    const response = await axios.post(`${apiUrl}/todo2`, payload);
     todos.value.push(response.data);
     newTodo.value = '';
     newMemo.value = '';
@@ -84,7 +87,7 @@ async function addTodo() {
 async function deleteTodo(id) {
   if (!confirm('本当に削除しますか？')) return;
   try {
-    await axios.delete(`http://localhost:3000/todo2/${id}`);
+    await axios.delete(`${apiUrl}/todo2/${id}`);
     todos.value = todos.value.filter(todo => todo.id !== id);
   } catch (error) {
     console.error('削除に失敗:', error);
@@ -122,7 +125,7 @@ function goToAdd() {
 
     <p v-if="todos.length === 0">ToDoがありません</p>
 
-    <table v-else >
+    <table v-else class="table" >
       <tbody>
         <tr>
           <th>ToDo</th>
@@ -166,7 +169,7 @@ function goToAdd() {
   text-decoration: line-through;
 }
 
-table {
+/* table {
   width: 70%;
   border-collapse: collapse;
 }
@@ -201,7 +204,7 @@ th:nth-child(5) {
 }
 th:nth-child(6) {
   width: 100px;
-}
+} */
 input, button {
   margin: 5px;
 }
