@@ -125,7 +125,7 @@ function goToAdd() {
 
     <p v-if="todos.length === 0">ToDoがありません</p>
 
-    <table v-else class="table" >
+    <table v-else class="todo-table" >
       <tbody>
         <tr>
           <th>ToDo</th>
@@ -136,12 +136,16 @@ function goToAdd() {
           <th>削除</th>
         </tr>
         <tr v-for="todo in paginatedTodos" :key="todo.id">
-          <td><span :class="{ 'todo-done': todo.status === '完了' }">{{ todo.todo }}</span></td>
-          <td>{{ todo.status }}</td>
-          <td>{{ formatDate(todo.addDate) }}</td>
-          <td>{{ formatDate(todo.changeDate) }}</td>
-          <td><button class="btn btn-primary" @click="goToEdit(todo)">編集</button></td>
-          <td><button class="btn btn-primary" @click="deleteTodo(todo.id)">削除</button></td>
+          <td data-label="Todo"><span :class="{ 'todo-done': todo.status === '完了' }">{{ todo.todo }}</span></td>
+          <td data-label="状態">{{ todo.status }}</td>
+          <td data-label="追加日">{{ formatDate(todo.addDate) }}</td>
+          <td data-label="更新日">{{ formatDate(todo.changeDate) }}</td>
+          <td class="action" data-label="編集">
+            <button class="btn btn-primary" @click="goToEdit(todo)">編集</button>
+          </td>
+          <td class="action" data-label="削除">
+            <button class="btn btn-primary" @click="deleteTodo(todo.id)">削除</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -205,6 +209,48 @@ th:nth-child(5) {
 th:nth-child(6) {
   width: 100px;
 } */
+
+/* 共通スタイル */
+.todo-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.todo-table th,
+.todo-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* モバイル（画面幅 600px 以下） */
+@media (max-width: 600px) {
+  .todo-table thead {
+    display: none; /* ヘッダー行は非表示 */
+  }
+  .todo-table tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 0.75rem;
+  }
+  .todo-table tbody td {
+    display: flex;
+    justify-content: space-between;
+    /* 任意でラベルを追加 */
+  }
+  .todo-table tbody td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    margin-right: 0.5rem;
+    white-space: nowrap;
+  }
+  .todo-table .actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+}
+
 input, button {
   margin: 5px;
 }
