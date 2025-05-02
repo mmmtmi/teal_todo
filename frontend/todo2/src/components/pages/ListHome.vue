@@ -121,7 +121,25 @@ function goToAdd() {
   </div>
 
   <div>
+    <p>
     <button class="btn btn-primary" @click="goToAdd">追加</button>
+    </p>
+
+    <div v-if="totalpage > 1" class="pagination">
+      <button @click="changePage(currentPage - 1)" :disabled="currentPage === 1">前へ</button>
+
+      <button
+        v-for="page in totalpage"
+        :key="page"
+        :class="{ active: currentPage === page }"
+        @click="changePage(page)"
+      >
+        {{ page }}
+      </button>
+
+      <button @click="changePage(currentPage + 1)" :disabled="currentPage === totalpage">次へ</button>
+    </div>
+
 
     <p v-if="todos.length === 0">ToDoがありません</p>
 

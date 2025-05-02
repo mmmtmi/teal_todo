@@ -31,8 +31,9 @@ async function updateTodo() {
   alert('更新しました！')
   router.push('/') // 一覧に戻るなど
 }
-
-
+function goHome() {
+  router.push({ name: 'ListHome' });
+}
 </script>
 
 <template>
@@ -53,18 +54,23 @@ async function updateTodo() {
 </div>
     
     <dev><label>状態:</label></dev>
+    <p>
     <div>
     <select v-model="status">
       <option>未着手</option>
       <option>進行中</option>
       <option>完了</option>
     </select>
-    </div>
+    </div> </p>
     <div>
-    
-    </div>
-
+   
+    </div  class="btn-toolbar" role="toolbar">
+    <div class="btn-group me-2" role="group" aria-label="第一グループ">
     <button class="btn btn-primary" @click="updateTodo">保存</button>
+  </div>
+  <div class="btn-group me-2" role="group" aria-label="第二グループ">
+    <button class="btn btn-danger" @click="goHome">キャンセル</button>
+  </div>
   </div>
 </template>
 
