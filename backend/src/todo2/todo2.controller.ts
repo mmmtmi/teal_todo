@@ -24,6 +24,7 @@ export class Todo2Controller {
   @Header('Pragma', 'no-cache') // HTTP/1.0用
   @Header('Expires', '0') // 古いキャッシュ対策
   findAll(@Query('sort')sort?: string){
+    console.log('Controller sort param:', sort);  
     return this.todo2Service.findAll(sort);
   }
   
