@@ -14,9 +14,14 @@ export class Todo2Controller {
     return this.todo2Service.create(createTodo2Dto);
   }
 
+  // @Get()
+  // async findAll(){
+  //   return this.todo2Service.findAll();
+  // }
+  
   @Get()
-  async findAll(){
-    return this.todo2Service.findAll();
+  findAll(@Query('sort')sort?: string){
+    return this.todo2Service.findAll(sort);
   }
   
   @Get(':id')

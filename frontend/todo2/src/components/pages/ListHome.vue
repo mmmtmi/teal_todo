@@ -17,7 +17,13 @@ const itemsPerPage = ref(10); // 1ページあたりのアイテム数
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
+const sortOption = ref(''); 
+
 onMounted(() => {
+  fetchTodos();
+});
+
+watch(sortOption,() => {
   fetchTodos();
 });
 
@@ -28,10 +34,13 @@ const limit = 10;
 const searchQuery = ref('');
 const selectedStatus = ref('all'); // 'all', '未着手', '進行中', '完了'
 
-async function fetchTodos() {
+const fetchTodos = async() => {
   try {
-    const response = await axios.get(`${apiUrl}/todo2`);
-    console.log('todo2 response:', response.data);
+    const response = await axios.get(`${apiUrl}/todo2`, {
+      params: {
+        sort : sortOption.value,
+      }
+    });
     todos.value = response.data;
   } catch (error) {
     console.error('データの取得に失敗:', error);
@@ -94,6 +103,8 @@ async function deleteTodo(id) {
   }
 }
 
+
+
 function formatDate(dateStr) {
   return dayjs(dateStr).format('YYYY/M/D HH:mm');
 }
@@ -124,6 +135,18 @@ function goToAdd() {
     <p>
     <button class="btn btn-primary" @click="goToAdd">追加</button>
     </p>
+
+    <div>
+      <label for="sort">ソート：</label>
+      <select v-model="sortOption">
+        <option value="createdAt_desc">追加日（新しい順）</option>
+        <option value="createdAt_asc">追加日（古い順）</option>
+        <option value="updatedAt_desc">更新日（新しい順）</option>
+        <option value="updatedAt_asc">更新日（古い順）</option>
+        <option value="name_asc">名前（A→z）</option>
+        <option value="name_desc">名前（z→A）</option>
+      </select>
+    </div>
 
     <div v-if="totalpage > 1" class="pagination">
       <button @click="changePage(currentPage - 1)" :disabled="currentPage === 1">前へ</button>

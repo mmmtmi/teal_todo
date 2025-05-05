@@ -19,9 +19,26 @@ export class Todo2Service {
     private todoRepository: Repository<Todo2>,
   ) {}
 
-  async findAll(): Promise<Todo2[]> {
-    return this.todoRepository.find()
+  async findAll(sort?: string): Promise<Todo2[]> {
+    const query = this.todoRepository.createQueryBuilder('todo2');
+    if (sort) {
+      const [field, order] = sort.split('_');
+      const validFields = ['createdAt', 'updatedAt', 'name'];
+      const validOrders = ['asc', 'desc'];
+      if (validFields.includes(field) && validOrders.includes(order)) {
+        const map: Record<string, string> = {
+          createdAt: 'addDate',
+          updatedAt: 'changeDate',
+          name: 'todo',
+        };
+        query.orderBy(`todo2.${map[field]}`, order.toUpperCase() as 'ASC' | 'DESC');
+      }
+    }
+    const result = await query.getMany();
+    return result;
   }
+  
+  
 
   async create(createTodoDto: CreateTodo2Dto): Promise<Todo2> {
     const todo = this.todoRepository.create(createTodoDto);

@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Todo2 {
@@ -23,5 +23,6 @@ export class Todo2 {
 
   @Column({ type: 'datetime', nullable: true })
   changeDate?: Date;  // 更新日時（nullable）
+
 }
 
