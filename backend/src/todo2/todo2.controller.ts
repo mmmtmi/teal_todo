@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query,Header } from '@nestjs/common';
 import { Todo2Service } from './todo2.service';
 import { CreateTodo2Dto } from './dto/create-todo2.dto';
 import { UpdateTodo2Dto } from './dto/update-todo2.dto';
@@ -20,6 +20,9 @@ export class Todo2Controller {
   // }
   
   @Get()
+  @Header('Cache-Control', 'no-cache, no-store, must-revalidate') // 強めのキャッシュ制御
+  @Header('Pragma', 'no-cache') // HTTP/1.0用
+  @Header('Expires', '0') // 古いキャッシュ対策
   findAll(@Query('sort')sort?: string){
     return this.todo2Service.findAll(sort);
   }
