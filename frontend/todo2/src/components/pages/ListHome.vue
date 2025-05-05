@@ -39,6 +39,7 @@ const fetchTodos = async() => {
     const response = await axios.get(`${apiUrl}/todo2`, {
       params: {
         sort : sortOption.value,
+        timestamp: new Date().getTime()
       }
     });
     todos.value = response.data;
