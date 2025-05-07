@@ -16,7 +16,7 @@ export class TodoService {
     return this.todoRepository.find();
   }
 
-  create(createTodoDto: CreateTodo2Dto): Promise<Todo2> {
+  async create(createTodoDto: CreateTodo2Dto,userId: number): Promise<Todo2> {
     const todo = this.todoRepository.create(createTodoDto);
     return this.todoRepository.save(todo);
   }

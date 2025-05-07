@@ -1,24 +1,27 @@
 import { IsOptional,IsEnum,IsString,Length, IsDate, IsNumber, IsDateString } from 'class-validator';
-
+import { TodoStatus } from '../entities/todo2.entity';
 
 export class CreateTodo2Dto {
-    @IsEnum(['未着手', '完了', '進行中'])
-    status: '未着手' | '完了' | '進行中'; 
+    @IsEnum(TodoStatus)
+     status: TodoStatus;
 
-    @IsString() // statusの型を列挙の値に合わせる
-    @Length(1, 255)  // todoの内容の長さを制限
-    todo: string;  // todoの内容
-
+    @IsString()
+    @Length(1, 255)
+    todo: string;
+  
     @IsOptional()
     @IsString()
-    @Length(0, 512)  // memoの長さを制限
-    memo?: string;  // memoはオプションに設定（nullable）
-
+    @Length(0, 512)
+    memo?: string;
+  
     @IsDateString()
-    addDate: Date;  // 日時
-
+    addDate: Date;
+  
     @IsOptional()
     @IsDateString()
-    changeDate?: Date;  // 更新日時（nullable）
+    changeDate?: Date;
 
-}
+    @IsOptional()
+    isPublic? : boolean;
+  }
+  

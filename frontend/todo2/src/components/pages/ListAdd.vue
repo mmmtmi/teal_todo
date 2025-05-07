@@ -23,7 +23,7 @@ async function addTodo() {
   try {
     const response = await axios.post(`${apiUrl}/todo2`, payload);
     alert('追加しました！')
-    router.push('/'); // 一覧に戻るなど
+    router.push('/home'); // 一覧に戻るなど
   } catch (error) {
     console.error('追加に失敗:', error);
   }

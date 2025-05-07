@@ -22,14 +22,14 @@ onMounted(async () => {
 })
 
 async function updateTodo() {
-  await axios.put(`${apiUrl}/todo2/${id}`, {
+  await axios.patch(`${apiUrl}/todo2/${id}`, {
     todo: todo.value,
     memo: memo.value,
     status: status.value,
     changeDate: new Date().toISOString()
   })
   alert('更新しました！')
-  router.push('/') // 一覧に戻るなど
+  router.push('/home') // 一覧に戻るなど
 }
 function goHome() {
   router.push({ name: 'ListHome' });
@@ -61,6 +61,7 @@ function goHome() {
       <option>進行中</option>
       <option>完了</option>
     </select>
+    
     </div> </p>
     <div>
    

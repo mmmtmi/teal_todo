@@ -4,9 +4,12 @@ import { UpdateTodo2Dto } from './dto/update-todo2.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Todo2 } from './entities/todo2.entity';
+import { Logger } from '@nestjs/common';
+import { ForbiddenException } from '@nestjs/common';
 
 @Injectable()
 export class Todo2Service {
+  private readonly logger = new Logger(Todo2Service.name);
   findAndCount(options: { skip: number; take: number; }) {
     return this.todoRepository.findAndCount({
       skip: options.skip,
@@ -19,11 +22,15 @@ export class Todo2Service {
     private todoRepository: Repository<Todo2>,
   ) {}
 
-  async findAll(sort?: string): Promise<Todo2[]> {
+  async findAll(userId:number, sort?: string): Promise<Todo2[]> {
     console.log('Received sort param:', sort);
-  
-    const query = this.todoRepository.createQueryBuilder('Todo2');
-  
+    
+    const query = this.todoRepository
+    .createQueryBuilder('Todo2')
+    .leftJoin('Todo2.user', 'user')
+    .where('Todo2.isPublic = isPublic',{isPublic: true})
+    .orWhere('user.id = :userId',{userId});
+    
     const validFields = ['createdAt', 'updatedAt', 'name'];
     const validOrders = ['asc', 'desc'];
     const map: Record<string, string> = {
@@ -42,6 +49,8 @@ export class Todo2Service {
         query.orderBy(`Todo2.${column}`, direction);
       }
     }
+
+    query.where('todo2.isPublic = true OR Todo2.userID =:userId',{userId});
   
     return await query.getMany();
   }
@@ -51,19 +60,18 @@ export class Todo2Service {
   
   
 
-  async create(createTodoDto: CreateTodo2Dto): Promise<Todo2> {
-    const todo = this.todoRepository.create(createTodoDto);
-    console.log('保存されるデータ:', todo);  // 保存前のデータを確認
+  async create(createTodoDto: CreateTodo2Dto, userId: number): Promise<Todo2> {
+    this.logger.log(`Creating Todo with status: ${createTodoDto.status}`);
+
+    const todo = this.todoRepository.create({
+      ...createTodoDto,
+      user: { id: userId },
+    });
   
-    try {
-      const savedTodo = await this.todoRepository.save(todo);
-      console.log('保存されたデータ:', savedTodo);  // 保存後のデータを確認
-      return savedTodo;
-    } catch (error) {
-      console.error('保存エラー:', error);
-      throw new Error('保存に失敗しました');
-    }
+    return await this.todoRepository.save(todo);
   }
+  
+  
   
 
   async findOne(id: number): Promise<Todo2> {
@@ -74,17 +82,36 @@ export class Todo2Service {
     return todo;
   }
 
-  async update(id: number, updateTodoDto: UpdateTodo2Dto): Promise<Todo2> {
-    await this.todoRepository.update(id, updateTodoDto);
-    return this.findOne(id);
+  async update(id: number, updateTodoDto: UpdateTodo2Dto ,userId:number): Promise<Todo2> {
+    const todo = await this.todoRepository.findOne({ where:{id}, relations:['user']});
+    if(!todo || todo.user.id !== userId){
+      throw new ForbiddenException('このTODOを編集する権限がありません');
+    }
+    Object.assign(todo, updateTodoDto);
+    return this.todoRepository.save(todo);
   }
 
-  async remove(id: number): Promise<void> {
-    const result = await this.todoRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`TODO with id ${id} not found`);
+  async remove(id: number, userId: number) {
+    const todo = await this.todoRepository.findOne({ where: { id }, relations: ['user'] });
+    if (!todo || todo.user.id !== userId) {
+      throw new ForbiddenException('このTODOを削除する権限がありません');
     }
+    return this.todoRepository.remove(todo);
   }
-    
+  
+  async findMyTodos(userId: number): Promise<Todo2[]>{
+    return this.todoRepository.find({
+      where: { user: { id:userId}},
+    });
+  }
+
+  async findPublicTodos():Promise<Todo2[]>{
+    return this.todoRepository.find({
+      where: {isPublic: true}
+    })
+  }
+  async findByUser(userId: number): Promise<Todo2[]>{
+    return this.todoRepository.find({where: {user: { id:userId}}});
+  }
 }
 

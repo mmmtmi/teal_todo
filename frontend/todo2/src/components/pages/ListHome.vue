@@ -48,11 +48,21 @@ const fetchTodos = async() => {
   }
 }
 
+const activeTab = ref('all'); // 初期タブは「すべて」
+
+// フィルタリング処理
 const filteredTodos = computed(() => {
   return todos.value.filter(todo => {
     const matchesSearch = todo.todo.includes(searchQuery.value);  // 検索条件
     const matchesStatus = selectedStatus.value === 'all' || todo.status === selectedStatus.value;  // ステータス条件
-    return matchesSearch && matchesStatus;
+
+    // タブに基づくフィルター
+    const matchesTab =
+      activeTab.value === 'all' ||
+      (activeTab.value === 'public' && todo.isPublic) ||
+      (activeTab.value === 'private' && !todo.isPublic);
+
+    return matchesSearch && matchesStatus && matchesTab;
   });
 });
 
@@ -118,7 +128,13 @@ function goToAdd() {
   router.push({ name: 'ListAdd' });
 }
 
+// 表示切り替え
+function toggleView() {
+  state.value.isAccordion = !state.value.isAccordion;
+}
+
 </script>
+
 
 <template>
   <router-view />
@@ -164,33 +180,59 @@ function goToAdd() {
       <button @click="changePage(currentPage + 1)" :disabled="currentPage === totalpage">次へ</button>
     </div>
 
+    
+    <div>
+  <!-- タブ -->
+  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" :class="{ active: activeTab === 'all' }" @click="activeTab = 'all'" type="button">すべて</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" :class="{ active: activeTab === 'public' }" @click="activeTab = 'public'" type="button">公開</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" :class="{ active: activeTab === 'private' }" @click="activeTab = 'private'" type="button">非公開</button>
+    </li>
+  </ul>
 
-    <p v-if="todos.length === 0">ToDoがありません</p>
+  <!-- ToDoがない場合 -->
+  <p v-if="paginatedTodos.length === 0">ToDoがありません</p>
 
-    <table v-else class="todo-table" >
-      <tbody>
-        <tr>
-          <th>ToDo</th>
-          <th>状態</th>
-          <th>追加日</th>
-          <th>更新日</th>
-          <th>編集</th>
-          <th>削除</th>
-        </tr>
-        <tr v-for="todo in paginatedTodos" :key="todo.id">
-          <td data-label="Todo"><span :class="{ 'todo-done': todo.status === '完了' }">{{ todo.todo }}</span></td>
-          <td data-label="状態">{{ todo.status }}</td>
-          <td data-label="追加日">{{ formatDate(todo.addDate) }}</td>
-          <td data-label="更新日">{{ formatDate(todo.changeDate) }}</td>
-          <td class="action" data-label="編集">
-            <button class="btn btn-primary" @click="goToEdit(todo)">編集</button>
-          </td>
-          <td class="action" data-label="削除">
-            <button class="btn btn-primary" @click="deleteTodo(todo.id)">削除</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- タブの中身（ToDo一覧） -->
+  <table v-else class="table table-striped todo-table">
+    <thead>
+      <tr>
+        <th>ToDo</th>
+        <th>状態</th>
+        <th>追加日</th>
+        <th>更新日</th>
+        <th>編集</th>
+        <th>削除</th>
+        <th>パブリック</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="todo in paginatedTodos" :key="todo.id">
+        <td data-label="Todo"><span :class="{ 'text-decoration-line-through': todo.status === '完了' }">{{ todo.todo }}</span></td>
+        <td data-label="状態">{{ todo.status }}</td>
+        <td data-label="追加日">{{ formatDate(todo.addDate) }}</td>
+        <td data-label="更新日">{{ formatDate(todo.changeDate) }}</td>
+        <td class="action" data-label="編集">
+          <button class="btn btn-primary btn-sm" @click="goToEdit(todo)">編集</button>
+        </td>
+        <td class="action" data-label="削除">
+          <button class="btn btn-danger btn-sm" @click="deleteTodo(todo.id)">削除</button>
+        </td>
+        <td data-label="パブリック">
+  <span :class="todo.isPublic ? 'badge bg-success' : 'badge bg-secondary'">
+    <i :class="todo.isPublic ? 'bi bi-check-circle' : 'bi bi-lock'"></i>
+    {{ todo.isPublic ? '公開' : '非公開' }}
+  </span>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
     <!-- ページネーション -->
     <div v-if="totalpage > 1" class="pagination">

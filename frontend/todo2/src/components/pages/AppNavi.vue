@@ -16,13 +16,17 @@ import { useRouter } from "vue-router";
 defineProps<{ title: string; menuItems: MenuItem[] }>();
 
 const router = useRouter();
-
 const isToggle = ref(false);
 
 const goToUrl = (url?: string) => {
   if (url != undefined) {
     router.push(url);
   }
+};
+
+const logout = () => {
+  localStorage.removeItem("token");
+  router.push("/");
 };
 </script>
 
@@ -36,8 +40,15 @@ const goToUrl = (url?: string) => {
           class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
           @click="isToggle = !isToggle"
         >
-          <i class="fas fa-bars"></i>
+          <i class="bi bi-list"></i>
         </button>
+        <ul class="navbar-nav ms-auto me-3">
+        <li class="nav-item">
+          <a class="nav-link" href="#" @click.prevent="logout">
+            <i class="bi bi-box-arrow-right me-1"></i> ログアウト
+          </a>
+        </li>
+      </ul>
       </nav>
   
       <div id="layoutSidenav">
@@ -61,7 +72,7 @@ const goToUrl = (url?: string) => {
                   @click="goToUrl(item.url)"
                 >
                   <div class="sb-nav-link-icon">
-                    <i :class="['fas', item.icon]"></i>
+                    <i :class="['bi', item.icon]"></i>
                   </div>
                   {{ item.title }}
                 </a>

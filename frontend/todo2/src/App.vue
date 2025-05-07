@@ -1,31 +1,21 @@
-<script setup lang="ts">
-import AppNavi, { type MenuItem } from "./components/pages/AppNavi.vue";
+<script setup>
+import { useRoute } from 'vue-router'
+import { computed } from 'vue'
+import DefaultLayout from './layouts/DefaultLayout.vue'
+import AuthLayout from './layouts/AuthLayout.vue'
 
-const menuItems: MenuItem[] = [
-  {
-    type: "heading",
-    title: "Main",
-  },
-  {
-    type: "menu",
-    title: "ToDo",
-    icon: "fa-list",
-    url: "/",
-  },
-  {
-    type: "menu",
-    title: "ToDo/add",
-    icon: "fa-list",
-    url: "/add",
-  },
-];
-
+const route = useRoute()
+const layout = computed(() => route.meta.layout || 'default')
 </script>
 
 <template>
   <!-- <RouterLink to="/" >Home</RouterLink> 
   <h1 class="display-5">ToDoリスト</h1> -->
-  <AppNavi title="Todo App" :menu-items="menuItems"></AppNavi>
+  <div>
+    <DefaultLayout v-if="layout === 'default'" />
+    <AuthLayout v-else/>
+  </div>
+  
   
  
 
