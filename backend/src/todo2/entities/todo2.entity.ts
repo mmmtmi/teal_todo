@@ -33,9 +33,9 @@ export class Todo2 {
   @Column({ type: 'datetime', nullable: true })
   changeDate?: Date;  // 更新日時（nullable）
 
-  @ManyToOne(() => User, user => user.todos, { nullable: true })
-  @JoinColumn()
-  user:User;
+  @ManyToOne(() => User, user => user.todos, { nullable: false })
+  @JoinColumn({ name: 'userId' })
+  user: User;
 
   @Column({ default:false})
   isPublic: boolean;

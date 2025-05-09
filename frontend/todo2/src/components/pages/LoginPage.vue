@@ -27,7 +27,7 @@
   </script>
 
   <template>
-    <router-view />
+   
 <div class="container-fluid vh-100 w-100 d-flex justify-content-center align-items-center bg-dark">
   <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px;">
     <div class="text-center mb-4">

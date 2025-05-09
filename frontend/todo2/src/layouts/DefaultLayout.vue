@@ -24,6 +24,7 @@ const menuItems: MenuItem[] = [
 <template>
     <div>
         <AppNavi title="Todo App" :menu-items="menuItems"/>
+        <router-view />
     </div>
   </template>
   

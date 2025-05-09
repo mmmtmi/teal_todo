@@ -20,6 +20,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const token = localStorage.getItem("token");
+    console.log('🛡 beforeEach: to=', to.path, 'token=', token);
+    console.log('🧭 loading component:', to.name); // ← 追加！
     if (to.meta.requiresAuth && !token) {
       // 未ログインで認証が必要なページ → ログインページに飛ばす
       next({ path: "/" });
