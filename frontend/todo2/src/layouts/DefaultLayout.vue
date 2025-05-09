@@ -7,13 +7,13 @@ const menuItems: MenuItem[] = [
   },
   {
     type: "menu",
-    title: "ToDo",
+    title: "ToDo一覧",
     icon: "bi-list",
     url: "/home",
   },
   {
     type: "menu",
-    title: "ToDo/add",
+    title: "ToDoの追加",
     icon: "bi-list",
     url: "/add",
   },
@@ -22,9 +22,11 @@ const menuItems: MenuItem[] = [
 
 
 <template>
-    <div>
-        <AppNavi title="Todo App" :menu-items="menuItems"/>
-        <router-view />
+  <div>
+    <AppNavi title="Todo App" :menu-items="menuItems" />
+    <div class="container-fluid px-4 mt-4">
+      
     </div>
-  </template>
+  </div>
+</template>
   

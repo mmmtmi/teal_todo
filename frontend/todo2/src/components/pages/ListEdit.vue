@@ -9,6 +9,7 @@ const router = useRouter()
 const todo = ref('')
 const memo = ref('')
 const status = ref('未着手') // 初期状態
+const isPublic = ref(false);
 const id = route.params.id
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -19,6 +20,7 @@ onMounted(async () => {
   todo.value = data.todo
   memo.value = data.memo
   status.value = data.status
+  isPublic.value = data.isPublic
 })
 
 async function updateTodo() {
@@ -26,7 +28,8 @@ async function updateTodo() {
     todo: todo.value,
     memo: memo.value,
     status: status.value,
-    changeDate: new Date().toISOString()
+    changeDate: new Date().toISOString(),
+    isPublic: isPublic.value,
   })
   alert('更新しました！')
   router.push('/home') // 一覧に戻るなど
@@ -37,41 +40,51 @@ function goHome() {
 </script>
 
 <template>
-  
-  <div>
-    <div>
-      <h2 class="display-6">ToDo編集</h2>
-    </div>
-    <div><label>ToDo:</label></div>
-    <div>
-    <textarea v-model="todo" id="todoCss" ></textarea>
-   </div>
-    
-    <label>メモ:</label>
-<div> 
-  <textarea id="textarea" v-model="memo" ></textarea>
+  <div class="container mt-4">
+    <div class="card shadow">
+      <div class="card-header">
+        <h2 class="h5 mb-0">ToDo編集</h2>
+      </div>
+      <div class="card-body">
 
-</div>
-    
-    <dev><label>状態:</label></dev>
-    <p>
-    <div>
-    <select v-model="status">
-      <option>未着手</option>
-      <option>進行中</option>
-      <option>完了</option>
-    </select>
-    
-    </div> </p>
-    <div>
-   
-    </div  class="btn-toolbar" role="toolbar">
-    <div class="btn-group me-2" role="group" aria-label="第一グループ">
-    <button class="btn btn-primary" @click="updateTodo">保存</button>
-  </div>
-  <div class="btn-group me-2" role="group" aria-label="第二グループ">
-    <button class="btn btn-danger" @click="goHome">キャンセル</button>
-  </div>
+        <div class="mb-3">
+          <label for="todo" class="form-label">ToDo</label>
+          <textarea id="todo" class="form-control" v-model="todo" rows="2"></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="memo" class="form-label">メモ</label>
+          <textarea id="memo" class="form-control" v-model="memo" rows="3"></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="status" class="form-label">状態</label>
+          <select id="status" class="form-select" v-model="status">
+            <option>未着手</option>
+            <option>進行中</option>
+            <option>完了</option>
+          </select>
+        </div>
+
+        <div class="form-check mb-3">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="isPublic"
+            v-model="isPublic"
+          />
+          <label class="form-check-label" for="isPublic">
+            みんなに共有する（公開ToDo）
+          </label>
+        </div>
+
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-primary me-2" @click="updateTodo">保存</button>
+          <button class="btn btn-secondary" @click="goHome">キャンセル</button>
+        </div>
+
+      </div>
+    </div>
   </div>
 </template>
 
