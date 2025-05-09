@@ -264,7 +264,6 @@ function formatMemoSafe(memo: string | undefined | null): string {
         </tr>
       </tbody>
     </table>
-    </
 
     <!-- アコーディオン形式 -->
     <div v-else class="accordion" id="todoAccordion">
