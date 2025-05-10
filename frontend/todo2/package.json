@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "prod": "vite --mode production"
   },
@@ -13,6 +13,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
+    "@nestjs/jwt": "^11.0.0",
     "@popperjs/core": "^2.11.8",
     "axios": "^1.9.0",
     "bootstrap": "^5.3.5",
@@ -26,6 +27,7 @@
   },
   "devDependencies": {
     "@types/bootstrap": "^5.2.10",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.3",
     "@types/vue-router": "^2.0.0",
     "@vitejs/plugin-vue": "^5.2.2",

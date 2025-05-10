@@ -20,6 +20,6 @@ RUN npm run build
 EXPOSE 3000
 
 # 8. アプリを起動するコマンド
-CMD ["npm", "run", "start:prod"]
+CMD ["node", "dist/main"]
 
 COPY .env.production .env

@@ -15,6 +15,7 @@ async function bootstrap() {
   app.useLogger(new Logger());
   app.enableCors();
   app.useGlobalFilters(new AllExceptionsFilter());
+ app.setGlobalPrefix('api');
 
   await app.listen(process.env.PORT ?? 3000);
 }

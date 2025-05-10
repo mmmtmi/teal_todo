@@ -10,15 +10,15 @@ import { Todo2Module } from 'src/todo2/todo2.module';
 
 @Module({
   imports: [
-    AuthModule,Todo2Module,
+    Todo2Module,
     PassportModule,
     JwtModule.register({
       secret: 'your-secret-key',
       signOptions: { expiresIn: '1h' },
     }),
-    UserModule, // これでUserServiceが使える
+    UserModule,
   ],
-  providers: [AuthService,JwtStrategy], // ここで AuthService がプロバイダとして登録されているか確認
-  controllers: [AuthController], // コントローラーにAuthControllerが追加されていること
+  providers: [AuthService, JwtStrategy],
+  controllers: [AuthController],
 })
 export class AuthModule {}

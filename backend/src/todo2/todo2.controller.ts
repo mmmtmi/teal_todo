@@ -56,10 +56,11 @@ async create(@Body() createTodo2Dto: CreateTodo2Dto, @Req() req) {
   @Delete(':id')
   async remove(@Param('id') id: number, @Req() req) {
     return this.todo2Service.remove(id, req.user.id);
-  }
-
+  } 
+  @UseGuards(AuthGuard('jwt'))
   @Get('my')
   getMytodos(@Req() req){
+    console.log('req.user:', req.user); // ← ここに出るはず
     const userId = req.user.id;
     return this.todo2Service.findMyTodos(userId);
   } 
@@ -69,7 +70,7 @@ async create(@Body() createTodo2Dto: CreateTodo2Dto, @Req() req) {
   }
   
   @UseGuards(JwtAuthGuard)
-  @Get()
+  @Get('user')
   async findUserTodos(@Req() req){
     const userId = req.user.id;
     return this.todo2Service.findByUser(userId);

@@ -22,38 +22,35 @@ export class Todo2Service {
     private todoRepository: Repository<Todo2>,
   ) {}
 
-  async findAll(userId:number, sort?: string): Promise<Todo2[]> {
-    console.log('Received sort param:', sort);
-    
-    const query = this.todoRepository
+async findAll(userId: number, sort?: string): Promise<Todo2[]> {
+  console.log('Received sort param:', sort);
+
+  const query = this.todoRepository
     .createQueryBuilder('Todo2')
     .leftJoin('Todo2.user', 'user')
-    .where('Todo2.isPublic = isPublic',{isPublic: true})
-    .orWhere('user.id = :userId',{userId});
-    
-    const validFields = ['createdAt', 'updatedAt', 'name'];
-    const validOrders = ['asc', 'desc'];
-    const map: Record<string, string> = {
-      createdAt: 'addDate',
-      updatedAt: 'changeDate',
-      name: 'todo',
-    };
-  
-    if (sort) {
-      const [field, order] = sort.split('_');
-      if (validFields.includes(field) && validOrders.includes(order)) {
-        const column = map[field];
-        const direction = order.toUpperCase() as 'ASC' | 'DESC';
-  
-        console.log(`Applying ORDER BY: Todo2.${column} ${direction}`);
-        query.orderBy(`Todo2.${column}`, direction);
-      }
-    }
+    .where('Todo2.isPublic = true OR user.id = :userId', { userId });
 
-    query.where('todo2.isPublic = true OR Todo2.userID =:userId',{userId});
-  
-    return await query.getMany();
+  const validFields = ['createdAt', 'updatedAt', 'name'];
+  const validOrders = ['asc', 'desc'];
+  const map: Record<string, string> = {
+    createdAt: 'addDate',
+    updatedAt: 'changeDate',
+    name: 'todo',
+  };
+
+  if (sort) {
+    const [field, order] = sort.split('_');
+    if (validFields.includes(field) && validOrders.includes(order)) {
+      const column = map[field];
+      const direction = order.toUpperCase() as 'ASC' | 'DESC';
+
+      console.log(`Applying ORDER BY: Todo2.${column} ${direction}`);
+      query.orderBy(`Todo2.${column}`, direction);
+    }
   }
+
+  return await query.getMany();
+}
   
   
   
