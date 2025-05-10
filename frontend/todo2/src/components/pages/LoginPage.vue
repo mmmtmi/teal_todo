@@ -31,6 +31,7 @@
 <div class="container-fluid vh-100 w-100 d-flex justify-content-center align-items-center bg-dark">
   <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px;">
     <div class="text-center mb-4">
+      <img src="\src\assets\logo2.png" alt="Focado ロゴ" width="300" height="auto">
       <h1 class="h4 text-gray-900">ログイン</h1>
       
     </div>
