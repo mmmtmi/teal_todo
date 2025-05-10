@@ -1,5 +1,5 @@
 # 1. Node.jsの公式イメージを使う（バージョンはプロジェクトに合わせて）
-FROM node:18
+FROM node:20
 
 # 2. 作業ディレクトリを作って移動
 WORKDIR /app
@@ -21,3 +21,5 @@ EXPOSE 3000
 
 # 8. アプリを起動するコマンド
 CMD ["npm", "run", "start:prod"]
+
+COPY .env.production .env
