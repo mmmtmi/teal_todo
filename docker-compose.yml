@@ -20,7 +20,7 @@ services:
       - ./backend/.env.production
     depends_on:
       - db
-    command: npm run start:prod  # ✅ これを追加！
+    command: npm run start:prod
 
   frontend:
     build: ./frontend/todo2
@@ -28,6 +28,7 @@ services:
       - "8080:80"
     depends_on:
       - backend
+
 
 volumes:
   db_data:
