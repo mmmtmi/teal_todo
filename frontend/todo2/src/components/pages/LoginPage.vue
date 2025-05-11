@@ -31,7 +31,7 @@
 <div class="container-fluid vh-100 w-100 d-flex justify-content-center align-items-center bg-dark">
   <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px;">
     <div class="text-center mb-4">
-      <img src="/logo2.png" alt="テストロゴ" width="200" />
+      <img src="/logo2.svg" alt="テストロゴ" width="250" />
       <h1 class="h4 text-gray-900">ログイン</h1>
       
     </div>
@@ -42,14 +42,10 @@
       <div class="form-group mb-3">
         <input type="password" v-model="password" class="form-control" placeholder="パスワード" required />
       </div>
-      <div  class="btn-toolbar" role="toolbar">
-        <div class="btn-group me-2" role="group">
-      <button type="submit" class="btn btn-primary btn-block">ログイン</button>
-    </div>
-        <div class="btn-group me-2" role="group">
-      <button class="btn btn-primary" @click="gotoRegister">ユーザー登録</button>
-          </div>
-      </div>
+     <div class="d-flex justify-content-between">
+  <button type="submit" class="btn btn-primary w-100 me-3">ログイン</button>
+  <button type="button" class="btn btn-secondary w-100" @click="gotoRegister">ユーザー登録</button>
+</div>
     </form>
   </div>
 </div>

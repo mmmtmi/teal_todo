@@ -34,7 +34,9 @@ const logout = () => {
     <!-- bodyは削除し、クラスをdivに移す -->
     <div :class="['sb-nav-fixed', isToggle ? 'sb-sidenav-toggled' : '']">
       <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <a class="navbar-brand ps-3" @click="goToUrl('/')">{{ title }}</a>
+        <a class="navbar-brand ps-3" @click="isToggle = !isToggle">
+           <img src="/logoWhite.svg" alt="白ロゴ" width="150" />
+        </a>
         <button
           id="sidebarToggle"
           class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
